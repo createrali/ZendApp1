@@ -58,15 +58,26 @@ class Employee implements InputFilterAwareInterface {
                ['name' => 'StringTrim'], 
             ], 
             'validators' => [ 
-               ['name' => 'StringLength', 
-                        'options' => [ 
-                           'encoding' => 'UTF-8', 
-                           'min' => 1, 
-                           'max' => 10, 
-                        ], 
-                    ], 
-                ], 
-            ]);
+               [
+                  'name' => 'StringLength', 
+                  'options' => [ 
+                     'encoding' => 'UTF-8', 
+                     'min' => 3, 
+                     'max' => 20,
+                     'messages' => [
+                        'stringLengthTooShort' => 'Please enter Employee Name with minimum 3 character!',
+                        'stringLengthTooLong' => 'Please enter Employee Name with maximum 20 character!',
+                     ]
+                  ], 
+               ], 
+               [
+                  'name' => 'Alpha',
+                  'options' => [ 
+                     'allowWhiteSpace' => true
+                  ], 
+               ], 
+            ], 
+         ]);
          $inputFilter->add([ 
             'name' => 'emp_address', 
             'required' => true, 
