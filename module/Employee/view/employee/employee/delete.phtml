@@ -1,0 +1,19 @@
+<?php 
+   $title = 'Delete an employee record'; 
+   $this->headTitle($title);  
+?> 
+<h1><?php echo $this->escapeHtml($title); ?></h1>  
+
+'<?php echo "Name: " . $this->escapeHtml($employee->emp_name); ?>'  
+'<?php echo "Email: " . $this->escapeHtml($employee->emp_email); ?>'  
+<?php 
+   $url = $this->url('employee', array('action' => 'delete', 'emp_id' => $this->emp_id,)); 
+?>  
+
+<form action ="<?php echo $url; ?>" method = "post">
+   <div> 
+      <input type = "hidden" name = "emp_id" value = "<?php echo (int) $employee->emp_id; ?>" /> 
+      <input type = "submit" name = "del" value = "Yes" /> 
+      <input type = "submit" name = "del" value = "No" /> 
+   </div> 
+</form>

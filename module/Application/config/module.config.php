@@ -12,6 +12,7 @@ use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
+    'modules' => ['Zend\Db'],
     'router' => [
         'routes' => [
             'home' => [

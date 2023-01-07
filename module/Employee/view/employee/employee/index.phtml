@@ -1,0 +1,27 @@
+<?php 
+$title = 'Employee application'; 
+$this->headTitle($title); 
+?>  
+<a href="<?php echo $this->url('employee',['action'=>'add']);?>"><button type="button" class="btn btn-success">Add Employee</button></a> 
+<table class="table"> 
+   <tr> 
+      <th>Employee Name</th> 
+      <th>Email</th> 
+      <th>Phone</th> 
+      <th>Edit/Delete operations</th>
+   </tr> 
+   <?php foreach ($data as $empdata) : ?> 
+   <tr>  
+      <td><?php echo $this->escapeHtml($empdata->emp_name);?></td> 
+      <td><?php echo $this->escapeHtml($empdata->emp_email);?></td> 
+      <td><?php echo $this->escapeHtml($empdata->emp_phone);?></td> 
+      <td> 
+         <a href="<?php echo $this->url('employee', 
+            array('action'=>'edit', 'emp_id' =>$empdata->emp_id));?>">Edit</a> 
+            
+         <a href="<?php echo $this->url('employee', 
+            array('action'=>'delete', 'emp_id' => $empdata->emp_id));?>">Delete</a> 
+      </td> 
+   </tr> 
+   <?php endforeach; ?> 
+</table> 

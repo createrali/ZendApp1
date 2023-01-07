@@ -1,0 +1,16 @@
+<?php 
+   $title = 'Edit employee records'; 
+   $this->headTitle($title); 
+?>  
+<h1><?php echo $this->escapeHtml($title); ?></h1>  
+
+<?php 
+   $form = $this->form;  
+   $form->setAttribute('action', $this->url( 
+      'employee', 
+      array('action' => 'edit', 'emp_id' => $this->emp_id) 
+   )); 
+
+   echo $this->partial('base_form.phtml', [
+      'form' => $form
+   ]); 

@@ -1,0 +1,12 @@
+<?php 
+   $form->prepare(); 
+   echo $this->form()->openTag($form); 
+   echo $this->formHidden($form->get('emp_id')); 
+   echo $this->formRow($form->get('emp_name'))."<br>";
+   echo $this->formRow($form->get('emp_address'))."<br>";
+   echo $this->formRow($form->get('emp_email'))."<br>";
+   echo $this->formRow($form->get('emp_phone'))."<br>";
+   echo $this->formRow($form->get('emp_dob'))."<br>"; 
+   echo $this->formRow($form->get('emp_img'))."<br>"; 
+   echo $this->formSubmit($form->get('submit')); 
+   echo $this->form()->closeTag(); 
