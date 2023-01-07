@@ -44,11 +44,16 @@ class EmployeeForm extends Form {
       )); 
       $this->add(array( 
          'name' => 'emp_dob', 
-         'type' => 'Text', 
+         'type' => 'Date', 
          'required' => true, 
          'options' => array( 
-            'label' => 'Date Of Birth:', 
-         ), 
+            'label' => 'Date Of Birth:',
+            'format' => 'Y-m-d',
+         ),
+         'attributes' => [
+           'max' => date("Y-m-d"),
+           'step' => '1', // days; default step interval is 1 day
+         ],
       )); 
       $this->add(array( 
          'name' => 'emp_img', 

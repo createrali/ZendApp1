@@ -86,15 +86,16 @@ class Employee implements InputFilterAwareInterface {
                ['name' => 'StringTrim'], 
             ], 
             'validators' => [ 
-               ['name' => 'StringLength', 
-                        'options' => [ 
-                           'encoding' => 'UTF-8', 
-                           'min' => 1, 
-                           'max' => 300, 
-                        ], 
-                    ], 
-                ], 
-            ]);
+               [
+                  'name' => 'StringLength', 
+                  'options' => [ 
+                     'encoding' => 'UTF-8', 
+                     'min' => 1, 
+                     'max' => 300, 
+                  ], 
+               ], 
+            ], 
+         ]);
          $inputFilter->add([ 
             'name' => 'emp_email', 
             'required' => true, 
@@ -143,15 +144,19 @@ class Employee implements InputFilterAwareInterface {
                ['name' => 'StringTrim'], 
             ], 
             'validators' => [ 
-               ['name' => 'StringLength', 
-                        'options' => [ 
-                           'encoding' => 'UTF-8', 
-                           'min' => 1, 
-                           'max' => 10, 
-                        ], 
-                    ], 
-                ], 
-            ]);
+               [
+                  'name' => 'StringLength', 
+                  'options' => [ 
+                     'encoding' => 'UTF-8', 
+                     'min' => 10, 
+                     'max' => 10, 
+                  ], 
+               ],
+               [
+                  'name' => 'PhoneNumber' 
+               ], 
+            ], 
+         ]);
          $inputFilter->add([ 
             'name' => 'emp_dob', 
             'required' => true, 
@@ -159,16 +164,14 @@ class Employee implements InputFilterAwareInterface {
                ['name' => 'StripTags'], 
                ['name' => 'StringTrim'], 
             ], 
-            'validators' => [ 
-               ['name' => 'StringLength', 
-                        'options' => [ 
-                           'encoding' => 'UTF-8', 
-                           'min' => 1, 
-                           'max' => 10, 
-                        ], 
-                    ], 
-                ], 
-            ]);
+            'validators' => [
+               [
+                  'name' => 'Date', 
+                  'options' => [
+                  ], 
+               ], 
+            ], 
+         ]);
          $inputFilter->add([ 
             'name' => 'emp_img', 
             'required' => true, 
