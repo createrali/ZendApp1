@@ -9,6 +9,10 @@ class EmployeeTable {
    public function __construct(TableGatewayInterface $tableGateway) { 
       $this->tableGateway = $tableGateway; 
    }
+
+   public function getadapter(){
+      return $this->tableGateway->getAdapter();
+   }
    
    public function fetchAll() { 
       $resultSet = $this->tableGateway->select();  

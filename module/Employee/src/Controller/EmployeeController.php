@@ -20,12 +20,14 @@ class EmployeeController extends AbstractActionController {
    } 
 
    public function addAction() { 
+
       $form = new EmployeeForm();  
       $form->get('submit')->setValue('Add');  
       $request = $this->getRequest(); 
       
       if ($request->isPost()) { 
          $employee = new Employee(); 
+         $employee->setadapter($this->table->getadapter());
          $form->setInputFilter($employee->getInputFilter()); 
          $form->setData($request->getPost());  
          
@@ -41,6 +43,7 @@ class EmployeeController extends AbstractActionController {
    }
 
    public function editAction() { 
+
       $emp_id = (int) $this->params()->fromRoute('emp_id', 0); 
       if (!$emp_id) { 
          return $this->redirect()->toRoute('employee', array( 
@@ -49,6 +52,8 @@ class EmployeeController extends AbstractActionController {
       }  
       try { 
          $employee = $this->table->getEmployee($emp_id); 
+         $employee->setadapter($this->table->getadapter());
+
       } catch (\Exception $ex) { 
          return $this->redirect()->toRoute('employee', array( 
             'action' => 'index' 
@@ -71,7 +76,7 @@ class EmployeeController extends AbstractActionController {
       }  
       return array('emp_id' => $emp_id, 'form' => $form,); 
    }
-   
+
 
    public function deleteAction() { 
       $emp_id = (int) $this->params()->fromRoute('emp_id', 0); 

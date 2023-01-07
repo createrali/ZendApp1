@@ -4,9 +4,11 @@ namespace Employee\Model;
 use Zend\InputFilter\InputFilter; 
 use Zend\InputFilter\InputFilterAwareInterface; 
 use Zend\InputFilter\InputFilterInterface;  
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Adapter\AdapterInterface;
 
 class Employee implements InputFilterAwareInterface { 
-   public $emp_id; 
+   public $emp_id = 0; 
    public $emp_name; 
    public $emp_address; 
    public $emp_email; 
@@ -15,6 +17,12 @@ class Employee implements InputFilterAwareInterface {
    public $emp_img; 
    public $created_date; 
    public $update_date; 
+
+   public $adapter;
+
+   public function setadapter($adapter) {
+      $this->adapter = $adapter;
+   }
 
    public function exchangeArray($data) { 
       $this->emp_id = (!empty($data['emp_id'])) ? $data['emp_id'] : null; 
@@ -32,6 +40,7 @@ class Employee implements InputFilterAwareInterface {
    }  
 
    public function getInputFilter() { 
+
       if (!$this->inputFilter) { 
          $inputFilter = new InputFilter();  
          $inputFilter->add([ 
@@ -83,15 +92,38 @@ class Employee implements InputFilterAwareInterface {
                ['name' => 'StringTrim'], 
             ], 
             'validators' => [ 
-               ['name' => 'StringLength', 
-                        'options' => [ 
-                           'encoding' => 'UTF-8', 
-                           'min' => 1, 
-                           'max' => 100, 
-                        ], 
-                    ], 
-                ], 
-            ]);
+               [
+                  'name' => 'StringLength', 
+                  'options' => [ 
+                     'encoding' => 'UTF-8', 
+                     'min' => 1, 
+                     'max' => 100, 
+                  ], 
+               ],
+               [
+                  'name' => 'EmailAddress',
+                  'options' => [
+                     'allow' => \Zend\Validator\Hostname::ALLOW_DNS,
+                     'useMxCheck' => false,                            
+                  ]
+               ],
+               [
+                  'name'=>'Zend\Validator\Db\NoRecordExists',
+                  'options' => [
+                     'table' => 'employee', 
+                     'field' => 'emp_email',
+                     'adapter' => $this->adapter,
+                     'exclude' => [
+                        'field' => 'emp_id',
+                        'value' => $this->emp_id,
+                     ],
+                     'messages' => [
+                        'recordFound' => 'Email already taken'
+                     ]
+                  ]
+               ]
+            ]
+         ]);
          $inputFilter->add([ 
             'name' => 'emp_phone', 
             'required' => true, 
