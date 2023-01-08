@@ -3,11 +3,10 @@ namespace Employee\Model;
 
 use Zend\InputFilter\InputFilter; 
 use Zend\InputFilter\FileInput;
-use Zend\Validator\File\UploadFile;
-use Zend\Filter\File\RenameUpload;
 use Zend\InputFilter\InputFilterAwareInterface; 
 use Zend\InputFilter\InputFilterInterface;  
 use Zend\Db\Adapter\Adapter;
+use Zend\Validator\File\Extension;
 use Zend\Db\Adapter\AdapterInterface;
 
 class Employee implements InputFilterAwareInterface { 
@@ -186,15 +185,42 @@ class Employee implements InputFilterAwareInterface {
             ], 
          ]);
 
-         $file = new FileInput('emp_img'); 
-         $file->getValidatorChain()->attach(new UploadFile()); 
-         $file->getFilterChain()->attach( 
-            new RenameUpload([ 
-               'target'    => './public/img/employee', 
-               'randomize' => true, 
-               'use_upload_extension' => true 
-            ])); 
-         $inputFilter->add($file); 
+         $inputFilter->add([ 
+            'name' => 'emp_img', 
+            'required' => true, 
+            'filters' => [ 
+               [
+                  'name' => 'Zend\Filter\File\RenameUpload',
+                  'options' => [
+                     'target'    => './public/img/employee', 
+                     'randomize' => true, 
+                     'use_upload_extension' => true 
+                  ]
+               ] 
+            ], 
+            'validators' => [
+               [
+                  'name' => 'Zend\Validator\File\Extension',
+                  'options' => [
+                     'extension' => ['jpg', 'png', 'jpeg'],
+                     'case' => true
+                  ]
+               ],
+               [
+                  'name' => 'Zend\Validator\File\MimeType',
+                  'options' => [
+                     'mimeType' => ['image/gif', 'image/jpeg']
+                  ]
+               ],
+               [
+                  'name' => 'Zend\Validator\File\Size',
+                  'options' => [
+                     'max' => '2MB'
+                  ]
+               ],
+               ['name' => 'Zend\Validator\File\UploadFile'], 
+            ], 
+         ]);
 
          $this->inputFilter = $inputFilter; 
       } 
