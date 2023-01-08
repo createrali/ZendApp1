@@ -29,10 +29,16 @@ class EmployeeController extends AbstractActionController {
          $employee = new Employee(); 
          $employee->setadapter($this->table->getadapter());
          $form->setInputFilter($employee->getInputFilter()); 
-         $form->setData($request->getPost());  
+
+         $post = array_merge_recursive( 
+            $request->getPost()->toArray(), 
+            $request->getFiles()->toArray() 
+         );
+
+         $form->setData($post);  
          
          if ($form->isValid()) { 
-            $employee->exchangeArray($form->getData()); 
+            $employee->exchangeArray($form->getData());
             $this->table->saveEmployee($employee);  
             
             // Redirect to list of employees 
@@ -66,7 +72,12 @@ class EmployeeController extends AbstractActionController {
       
       if ($request->isPost()) { 
          $form->setInputFilter($employee->getInputFilter()); 
-         $form->setData($request->getPost());  
+         $post = array_merge_recursive( 
+            $request->getPost()->toArray(), 
+            $request->getFiles()->toArray() 
+         );
+
+         $form->setData($post); 
          if ($form->isValid()) { 
             $this->table->saveEmployee($employee);  
             

@@ -57,8 +57,7 @@ class EmployeeForm extends Form {
       )); 
       $this->add(array( 
          'name' => 'emp_img', 
-         'type' => 'Text', 
-         'required' => true, 
+         'type' => 'File', 
          'options' => array( 
             'label' => 'Profile Image:', 
          ), 

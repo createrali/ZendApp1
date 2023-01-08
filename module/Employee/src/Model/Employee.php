@@ -2,6 +2,9 @@
 namespace Employee\Model;  
 
 use Zend\InputFilter\InputFilter; 
+use Zend\InputFilter\FileInput;
+use Zend\Validator\File\UploadFile;
+use Zend\Filter\File\RenameUpload;
 use Zend\InputFilter\InputFilterAwareInterface; 
 use Zend\InputFilter\InputFilterInterface;  
 use Zend\Db\Adapter\Adapter;
@@ -31,7 +34,17 @@ class Employee implements InputFilterAwareInterface {
       $this->emp_email = (!empty($data['emp_email'])) ? $data['emp_email'] : null; 
       $this->emp_phone = (!empty($data['emp_phone'])) ? $data['emp_phone'] : null; 
       $this->emp_dob = (!empty($data['emp_dob'])) ? $data['emp_dob'] : null; 
-      $this->emp_img = (!empty($data['emp_img'])) ? $data['emp_img'] : null; 
+      
+      if(!empty($data['emp_img'])) { 
+         if(is_array($data['emp_img'])) { 
+            $this->emp_img = str_replace("./public", "", 
+               $data['emp_img']['tmp_name']); 
+         } else { 
+            $this->emp_img = $data['emp_img']; 
+         } 
+      } else { 
+         $data['emp_img'] = null; 
+      } 
    } 
     
    // Add content to these methods:
@@ -172,23 +185,17 @@ class Employee implements InputFilterAwareInterface {
                ], 
             ], 
          ]);
-         $inputFilter->add([ 
-            'name' => 'emp_img', 
-            'required' => true, 
-            'filters' => [ 
-               ['name' => 'StripTags'], 
-               ['name' => 'StringTrim'], 
-            ], 
-            'validators' => [ 
-               ['name' => 'StringLength', 
-                        'options' => [ 
-                           'encoding' => 'UTF-8', 
-                           'min' => 1, 
-                           'max' => 10, 
-                        ], 
-                    ], 
-                ], 
-            ]);
+
+         $file = new FileInput('emp_img'); 
+         $file->getValidatorChain()->attach(new UploadFile()); 
+         $file->getFilterChain()->attach( 
+            new RenameUpload([ 
+               'target'    => './public/img/employee', 
+               'randomize' => true, 
+               'use_upload_extension' => true 
+            ])); 
+         $inputFilter->add($file); 
+
          $this->inputFilter = $inputFilter; 
       } 
       return $this->inputFilter; 
