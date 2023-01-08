@@ -54,4 +54,18 @@ class EmployeeTable {
    public function deleteEmployee($emp_id) { 
       $this->tableGateway->delete(['emp_id' => (int) $emp_id]); 
    }
+
+   public function deleteProfile($filename) {
+      $filename = "public".$filename;
+      $Message = '';
+      if (file_exists($filename)) {
+         if (!unlink($filename)) {
+            return false;
+        } else {
+            return true;
+        }
+      } 
+
+      return false;
+   }
 }    

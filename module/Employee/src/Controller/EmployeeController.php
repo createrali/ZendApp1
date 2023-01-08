@@ -58,6 +58,7 @@ class EmployeeController extends AbstractActionController {
       }  
       try { 
          $employee = $this->table->getEmployee($emp_id); 
+         $employee->old_image = $employee->emp_img;
          $employee->setadapter($this->table->getadapter());
 
       } catch (\Exception $ex) { 
@@ -79,7 +80,15 @@ class EmployeeController extends AbstractActionController {
 
          $form->setData($post); 
          if ($form->isValid()) { 
+
+            if(empty($employee->emp_img) && !empty($employee->old_image)) {
+               $employee->emp_img = $employee->old_image;
+            }
             $this->table->saveEmployee($employee);  
+
+            if(!empty($employee->emp_img) && $employee->old_image != $employee->emp_img){
+               $this->table->deleteProfile($employee->old_image);
+            }
             
             // Redirect to list of employees 
             return $this->redirect()->toRoute('employee'); 
@@ -99,7 +108,15 @@ class EmployeeController extends AbstractActionController {
          $del = $request->getPost('del', 'No');  
          if ($del == 'Yes') { 
             $emp_id = (int) $request->getPost('emp_id');
-            $this->table->deleteEmployee($emp_id); 
+            try { 
+               $employee = $this->table->getEmployee($emp_id);
+               $this->table->deleteProfile($employee->emp_img);
+               $this->table->deleteEmployee($emp_id);  
+            } catch (\Exception $ex) { 
+               return $this->redirect()->toRoute('employee', array( 
+                  'action' => 'index' 
+               )); 
+            }
          } 
          return $this->redirect()->toRoute('employee'); 
       }  

@@ -17,7 +17,11 @@ $this->headTitle($title);
       <td><?php echo $this->escapeHtml($empdata->emp_email);?></td> 
       <td><?php echo $this->escapeHtml($empdata->emp_phone);?></td> 
       <td>
-         <img src="<?= $empdata->emp_img ?>" width="50px" height="50px" />
+         <?php 
+            if(!empty($empdata->emp_img)) {
+               echo "<img src='" . $empdata->emp_img . "' width='50px' height='50px' />";
+            }
+         ?>
       </td> 
       <td> 
          <a href="<?php echo $this->url('employee', 

@@ -19,6 +19,7 @@ class Employee implements InputFilterAwareInterface {
    public $emp_img; 
    public $created_date; 
    public $update_date; 
+   public $old_image;
 
    public $adapter;
 
@@ -187,7 +188,7 @@ class Employee implements InputFilterAwareInterface {
 
          $inputFilter->add([ 
             'name' => 'emp_img', 
-            'required' => true, 
+            'required' => false, 
             'filters' => [ 
                [
                   'name' => 'Zend\Filter\File\RenameUpload',
@@ -209,7 +210,7 @@ class Employee implements InputFilterAwareInterface {
                [
                   'name' => 'Zend\Validator\File\MimeType',
                   'options' => [
-                     'mimeType' => ['image/gif', 'image/jpeg']
+                     'mimeType' => ['image/png', 'image/jpeg']
                   ]
                ],
                [
