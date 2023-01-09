@@ -19,19 +19,29 @@ class EmployeeTable {
       return $this->tableGateway->getAdapter();
    }
    
-   public function fetchAll($paginated = false)
+   public function fetchAll($paginated = false,$filter = [])
    {
       if ($paginated) {
-         return $this->fetchPaginatedResults();
+         return $this->fetchPaginatedResults($filter);
       }
 
       return $this->tableGateway->select();
    }
 
-   private function fetchPaginatedResults()
+   private function fetchPaginatedResults($filter = [])
    {
       // Create a new Select object for the table:
       $select = new Select($this->tableGateway->getTable());
+
+      if(is_array($filter) && count($filter) > 0) {
+         foreach($filter as $colunm=>$value) {
+            switch($colunm) {
+               case "emp_name":
+                  $select->where->like('emp_name',"%$value%");
+                  break;
+            }
+         }
+      }
 
       // Create a new result set based on the Album entity:
       $resultSetPrototype = new ResultSet();

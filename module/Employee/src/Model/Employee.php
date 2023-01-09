@@ -18,7 +18,8 @@ class Employee implements InputFilterAwareInterface {
    public $emp_dob; 
    public $emp_img; 
    public $created_date; 
-   public $update_date; 
+   public $update_date;
+   public $emp_search;
    public $old_image;
 
    public $adapter;
@@ -226,7 +227,45 @@ class Employee implements InputFilterAwareInterface {
          $this->inputFilter = $inputFilter; 
       } 
       return $this->inputFilter; 
-   } 
+   }   
+
+   public function getSearchFilter() { 
+
+      if (!$this->inputFilter) { 
+         $inputFilter = new InputFilter();
+         $inputFilter->add([ 
+            'name' => 'emp_name', 
+            'required' => false, 
+            'filters' => [ 
+               ['name' => 'StripTags'], 
+               ['name' => 'StringTrim'], 
+            ], 
+            'validators' => [ 
+               [
+                  'name' => 'StringLength', 
+                  'options' => [ 
+                     'encoding' => 'UTF-8', 
+                     'min' => 3, 
+                     'max' => 20,
+                     'messages' => [
+                        'stringLengthTooShort' => 'Please enter Employee Name with minimum 3 character!',
+                        'stringLengthTooLong' => 'Please enter Employee Name with maximum 20 character!',
+                     ]
+                  ], 
+               ], 
+               [
+                  'name' => 'Alpha',
+                  'options' => [ 
+                     'allowWhiteSpace' => true
+                  ], 
+               ], 
+            ], 
+         ]);
+
+         $this->inputFilter = $inputFilter; 
+      } 
+      return $this->inputFilter; 
+   }
 
    public function getArrayCopy() { 
       return get_object_vars($this); 

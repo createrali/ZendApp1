@@ -2,9 +2,18 @@
 $title = 'Employee application'; 
 $this->headTitle($title); 
 ?>
-<p>
-   <a href="<?php echo $this->url('employee',['action'=>'add']);?>"><button type="button" class="btn btn-success">Add New Employee</button></a> 
-</p>
+<a class="float-left" href="<?php echo $this->url('employee',['action'=>'add']);?>"><button type="button" class="btn btn-success">Add New Employee</button></a>
+
+<div class="float-right">
+   <?php 
+      $form->setAttribute('action', $this->url('employee')); 
+      $form->prepare(); 
+      echo $this->form()->openTag($form); 
+      echo $this->formRow($form->get('emp_name'));
+      echo $this->formSubmit($form->get('submit'));
+      echo $this->form()->closeTag();
+   ?>
+</div>
 <table class="table"> 
    <tr> 
       <th>Employee Name</th> 

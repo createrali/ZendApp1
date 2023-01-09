@@ -5,6 +5,7 @@ use Zend\View\Model\ViewModel;
 use Employee\Model\Employee; 
 use Employee\Model\EmployeeTable;    
 use Employee\Form\EmployeeForm;
+use Employee\Form\EmployeeSearchForm;
 
 class EmployeeController extends AbstractActionController { 
    private $table;  
@@ -13,8 +14,27 @@ class EmployeeController extends AbstractActionController {
    }
      
    public function indexAction() { 
-      // Grab the paginator from the AlbumTable:
-      $paginator = $this->table->fetchAll(true);
+
+      $form = new EmployeeSearchForm();
+      $request = $this->getRequest(); 
+      
+      if ($request->isPost()) { 
+         $employee = new Employee();
+         $form->setInputFilter($employee->getSearchFilter());
+         $form->setData($request->getPost()); 
+         
+         if ($form->isValid()) {
+            $paginator = $this->table->fetchAll(true,$form->getData());
+         }
+         else {
+            $paginator = $this->table->fetchAll(true);
+         }
+      }
+      else{
+         $paginator = $this->table->fetchAll(true);
+      }
+
+      
 
       // Set the current page to what has been passed in query string,
       // or to 1 if none is set, or the page is invalid:
@@ -25,7 +45,7 @@ class EmployeeController extends AbstractActionController {
       // Set the number of items per page to 10:
       $paginator->setItemCountPerPage(10);
 
-      return new ViewModel(['paginator' => $paginator]);
+      return new ViewModel(['paginator' => $paginator, 'form' => $form]);
    } 
 
    public function addAction() { 
