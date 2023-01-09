@@ -1,0 +1,51 @@
+<?php if ($this->pageCount): ?>
+<div>
+  <ul class="pagination">
+  <!-- Previous page link -->
+  <?php if (isset($this->previous)): ?>
+    <li>
+      <a class="px-1" href="<?= $this->url($this->route, [], ['query' => ['page' => $this->previous]]) ?>">
+        <button type="button" class="btn btn-warning">Previous </button>
+      </a>
+    </li>
+  <?php else: ?>
+    <li class="disabled">
+      <a class="px-1" href="#">
+        <button type="button" class="btn btn-secondary">Previous </button>
+      </a>
+    </li>
+  <?php endif ?>
+
+  <!-- Numbered page links -->
+
+  <?php foreach ($this->pagesInRange as $page): ?>
+    <?php if ($page !== $this->current): ?>
+      <li>
+        <a class="px-1" href="<?= $this->url($this->route, [], ['query' => ['page' => $page]]) ?>">
+          <button type="button" class="btn btn-info"><?= $page ?></button>
+        </a> 
+      </li>
+    <?php else: ?>
+      <li class="active">
+        <a href="#" class="px-1"><button type="button" class="btn btn-success"><?= $page ?></button></a> 
+      </li>
+    <?php endif ?>
+  <?php endforeach ?>
+
+  <!-- Next page link -->
+  <?php if (isset($this->next)): ?>
+    <li>
+      <a class="px-1" href="<?= $this->url($this->route, [], ['query' => ['page' => $this->next]]) ?>">
+        <button type="button" class="btn btn-warning">Next</button>
+      </a> 
+    </li>
+  <?php else: ?>
+    <li class="disabled">
+      <a href="#" class="px-1">
+        <button type="button" class="btn btn-secondary">Next</button>
+      </a> 
+    </li>
+  <?php endif ?>
+  </ul>
+</div>
+<?php endif ?>

@@ -18,7 +18,8 @@
         "zendframework/zend-inputfilter": "^2.10",
         "zendframework/zend-form": "^2.14",
         "zendframework/zend-i18n": "^2.10",
-        "zendframework/zend-validator": "^2.13"
+        "zendframework/zend-validator": "^2.13",
+        "zendframework/zend-paginator": "^2.8"
     },
     "autoload": {
         "psr-4": {

@@ -1,8 +1,10 @@
 <?php 
 $title = 'Employee application'; 
 $this->headTitle($title); 
-?>  
-<a href="<?php echo $this->url('employee',['action'=>'add']);?>"><button type="button" class="btn btn-success">Add Employee</button></a> 
+?>
+<p>
+   <a href="<?php echo $this->url('employee',['action'=>'add']);?>"><button type="button" class="btn btn-success">Add New Employee</button></a> 
+</p>
 <table class="table"> 
    <tr> 
       <th>Employee Name</th> 
@@ -11,7 +13,7 @@ $this->headTitle($title);
       <th>Profile</th> 
       <th>Edit/Delete operations</th>
    </tr> 
-   <?php foreach ($data as $empdata) : ?> 
+   <?php foreach ($this->paginator as $empdata) : ?> 
    <tr>  
       <td><?php echo $this->escapeHtml($empdata->emp_name);?></td> 
       <td><?php echo $this->escapeHtml($empdata->emp_email);?></td> 
@@ -33,3 +35,4 @@ $this->headTitle($title);
    </tr> 
    <?php endforeach; ?> 
 </table> 
+<?= $this->paginationControl($this->paginator,'sliding','partial/paginator',['route' => 'employee']) ?>

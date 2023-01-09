@@ -203,7 +203,7 @@ class Employee implements InputFilterAwareInterface {
                [
                   'name' => 'Zend\Validator\File\Extension',
                   'options' => [
-                     'extension' => ['jpg', 'png', 'jpeg'],
+                     'extension' => ['jpg', 'png'],
                      'case' => true
                   ]
                ],

@@ -1,6 +1,11 @@
 <?php  
 namespace Employee\Model;  
-use Zend\Db\TableGateway\TableGatewayInterface;  
+use RuntimeException;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Select;
+use Zend\Db\TableGateway\TableGatewayInterface;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 
 class EmployeeTable { 
    
@@ -14,9 +19,29 @@ class EmployeeTable {
       return $this->tableGateway->getAdapter();
    }
    
-   public function fetchAll() { 
-      $resultSet = $this->tableGateway->select();  
-      return $resultSet; 
+   public function fetchAll($paginated = false)
+   {
+      if ($paginated) {
+         return $this->fetchPaginatedResults();
+      }
+
+      return $this->tableGateway->select();
+   }
+
+   private function fetchPaginatedResults()
+   {
+      // Create a new Select object for the table:
+      $select = new Select($this->tableGateway->getTable());
+
+      // Create a new result set based on the Album entity:
+      $resultSetPrototype = new ResultSet();
+      $resultSetPrototype->setArrayObjectPrototype(new Employee());
+
+      // Create a new pagination adapter object:
+      $paginatorAdapter = new DbSelect($select,$this->tableGateway->getAdapter(),$resultSetPrototype);
+
+      $paginator = new Paginator($paginatorAdapter);
+      return $paginator;
    }
 
    public function getEmployee($id) { 
