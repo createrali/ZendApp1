@@ -35,10 +35,12 @@ class EmployeeTable {
 
       if(is_array($filter) && count($filter) > 0) {
          foreach($filter as $colunm=>$value) {
-            switch($colunm) {
-               case "emp_name":
-                  $select->where->like('emp_name',"%$value%");
-                  break;
+            if(!empty($value)) {
+               switch($colunm) {
+                  case "emp_name":
+                     $select->where->like('emp_name',"%$value%");
+                     break;
+               }
             }
          }
       }
